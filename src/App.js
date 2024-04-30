@@ -13,11 +13,10 @@ function App() {
     <Router>
       <Navbar/>
       <Routes>
-        <Route path='/' element={<Home/>} />
+        <Route path='/' element={<Books/>} />
         <Route path='/add' element={<AddBook/>} />
         <Route path='/about' element={<About/>} />
         <Route path='/books/:id' element={<BookDetail/>} />
-        <Route path='/books' element={<Books/>} />
         <Route path='*' element={<PageNotFound/>} />
       </Routes>
     </Router>

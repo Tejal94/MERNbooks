@@ -18,8 +18,7 @@ const Navbar = () => {
 
                 <Tabs sx={{ m: 'auto' }} textColor={'white'} value={value} onChange={(e, val) => setValue(val)}>
                     <Tab label="Add Book" LinkComponent={NavLink} to="/add" />
-                    <Tab label="Books" LinkComponent={NavLink} to="/books" />
-                    <Tab label="Home" LinkComponent={NavLink} to="/" />
+                    <Tab label="Books" LinkComponent={NavLink} to="/" />
                     <Tab label="About us" LinkComponent={NavLink} to="/about" />
                 </Tabs>
             </Toolbar>

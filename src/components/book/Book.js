@@ -2,13 +2,18 @@ import React from 'react';
 import './books.css';
 import { Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Book = (props) => {
 
+    const navigate = useNavigate();
+
     const {_id, bName, author, description, price, image } = props.book ;
 
-    const deleteHandler = () => {
-
+    const deleteHandler = async () => {
+      await axios.delete(`https://mernbooksbackend.onrender.com/books/${_id}`)
+      .then((res) => res.data)
+      .then(() => navigate('/books'))
     }
 
   return (
@@ -19,7 +24,7 @@ const Book = (props) => {
             <h3>{bName}</h3>
             <p>{description}</p>
             <h2>Rs. {price}</h2>
-            <Button LinkComponent={Link} to={`books/${_id}`} >Update</Button>
+            <Button LinkComponent={Link} to={`/books/${_id}`} >Update</Button>
             <Button onClick={deleteHandler}>Delete</Button>
         </div>
     </>

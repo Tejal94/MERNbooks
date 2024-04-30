@@ -28,7 +28,7 @@ const AddBook = () => {
   }
 
   const sendData = async () => {
-    await axios.post('http://127.0.0.1:5000/books', {
+    await axios.post('https://mernbooksbackend.onrender.com/books', {
       bName: String(input.bName),
       author: String(input.author),
       description: String(input.description),

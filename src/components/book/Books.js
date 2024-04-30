@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Book from './Book';
 import axios from 'axios';
 
-const URL = "http://127.0.0.1:5000/books"
+const URL = "https://mernbooksbackend.onrender.com/books"
 
 const fetchBooks = async () => {
   return axios.get(URL).then((res) => res.data)

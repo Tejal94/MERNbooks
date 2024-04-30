@@ -1,112 +1,126 @@
-import React, { useState } from 'react';
-import { TextField, Box, Button, FormLabel, FormControlLabel, Checkbox } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Button, Checkbox, FormLabel, FormControlLabel, TextField } 
+from '@mui/material'
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
 
 const BookDetail = () => {
 
-  const [checked, setChecked] = useState();
+  const { id } = useParams();
+
+  const [input, setInput] = useState({});
+  const [checked, setChecked] = useState(false);
+
   const navigate = useNavigate();
 
-  const [input, setInput] = useState({
-    bName: "",
-    author: "",
-    description: "",
-    price: "",
-    available: "",
-    image: ""
-  });
+  useEffect(() => {
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    sendData().then(() => navigate('/books'))
-  }
+    const fetchHandler = async () => {
+      await axios.get(`https://mernbooksbackend.onrender.com/books/${id}`)
+      .then((res) => res.data)
+      .then(data => setInput(data))
+    }
 
-  const handleChange = (e) => {
-    setInput({...input, [e.target.name]: e.target.value})
-    console.log(input);
-  }
+    fetchHandler()
+  }, [id])
 
-  const sendData = async () => {
-    await axios.post('http://127.0.0.1:5000/books', {
+  const sendRequest = async () => {
+
+    await axios.put(`https://mernbooksbackend.onrender.com/books/${id}`, {
+
       bName: String(input.bName),
       author: String(input.author),
       description: String(input.description),
-      price: Number(input.price),
+      price: String(input.price),
       image: String(input.image),
       available: Boolean(checked)
-    }).then(res => res.data);
+
+    }).then((res) => res.data)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendRequest().then(() => navigate('/books'))
+  }
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setInput({ ...input, [e.target.name]: e.target.value })
   }
 
   return (
     <>
+
       <form onSubmit={handleSubmit}>
 
-        <Box display={'flex'}
+        <Box
+          display={'flex'}
           flexDirection={'column'}
           justifyContent={'center'}
           maxWidth={700}
           alignContent={'center'}
+          alignSelf={'center'}
           marginLeft={'auto'}
           marginRight={'auto'}
           marginTop={10}
-          alignSelf={'center'}
         >
 
-          <FormLabel>Name: </FormLabel>
-          <TextField onChange={handleChange}
+          <FormLabel>Name</FormLabel>
+          <TextField
+            onChange={handleChange}
             value={input.bName}
             fullWidth
             variant='outlined'
             name='bName'
           />
 
-          <FormLabel>Author: </FormLabel>
-          <TextField onChange={handleChange}
+          <FormLabel>Author</FormLabel>
+          <TextField
+            onChange={handleChange}
             value={input.author}
             fullWidth
             variant='outlined'
             name='author'
           />
 
-          <FormLabel>Description: </FormLabel>
-          <TextField onChange={handleChange}
+          <FormLabel>Description</FormLabel>
+          <TextField
+            onChange={handleChange}
             value={input.description}
             fullWidth
             variant='outlined'
             name='description'
           />
 
-          <FormLabel>Price: </FormLabel>
-          <TextField onChange={handleChange}
+          <FormLabel>Price</FormLabel>
+          <TextField
+            onChange={handleChange}
             value={input.price}
             fullWidth
             variant='outlined'
             name='price'
           />
 
-
-          <FormLabel>Image: </FormLabel>
-          <TextField onChange={handleChange}
+          <FormLabel>Image</FormLabel>
+          <TextField
+            onChange={handleChange}
             value={input.image}
             fullWidth
             variant='outlined'
             name='image'
           />
+
           <FormControlLabel control={
-            <Checkbox checked={checked}
-              onChange={() => setChecked(!checked)} />
-          }
-            label="Available:"
-          />
+            <Checkbox
+              checked={checked}
+              onChange={() => setChecked(!checked)}
+            />
+          } label="Available" />
 
-          <Button type='submit' variant={'contained'}>Add Book</Button>
-
+          <Button type={'submit'} variant={'contained'}>Add Book</Button>
         </Box>
-
-
       </form>
-
     </>
   )
 }
